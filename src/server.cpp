@@ -20,16 +20,16 @@ using namespace std;
 using namespace cv;
 using namespace chilitags;
 
-bool VERBOSE = false;
-bool STREAM_MODE = false;
-bool SET_MODE = false;
+static bool VERBOSE = false;
+static bool STREAM_MODE = false;
+static bool SET_MODE = false;
 
-std::string redisInputKey = "camera0";
-std::string redisOutputKey = "camera0:markers";
-std::string redisInputCameraParametersKey = "camera0";
+static std::string redisInputKey = "camera0";
+static std::string redisOutputKey = "camera0:markers";
+static std::string redisInputCameraParametersKey = "camera0";
 
-std::string redisHost = "127.0.0.1";
-int redisPort = 6379;
+static std::string redisHost = "127.0.0.1";
+static int redisPort = 6379;
 
 struct contextData {
     uint width;
@@ -231,7 +231,7 @@ void onImagePublished(redisAsyncContext* c, void* rep, void* privdata) {
     uint channels = data->channels;
     RedisImageHelperSync* clientSync = data->clientSync;
 
-    Image* image = RedisImageHelper::dataToImage(reply->element[2]->str, width, height, channels, reply->element[2]->len);
+    Image* image = clientSync->getImage(width, height, channels, redisInputKey);
     if (image == NULL) {
         if (VERBOSE) {
             std::cerr << "Error: Could not retrieve image from data." << std::endl;
@@ -297,10 +297,17 @@ int main(int argc, char** argv) {
         bool loop = true;
         while (loop) {
             Image* image = clientSync.getImage(data.width, data.height, data.channels);
-            std::string json = process(image);
-            clientSync.setString((char*)json.c_str(), redisOutputKey);
-            std::cerr << json << std::endl;
-            delete image;
+            if (image != NULL) {
+                std::string json = process(image);
+                clientSync.setString((char*)json.c_str(), redisOutputKey);
+                if (VERBOSE) {
+                    std::cerr << json << std::endl;
+                }
+                delete image;
+            }
+            else {
+                std::cerr << "Error: Failed to retreive image from data" << std::endl;
+            }
             loop = SET_MODE ? true : false;
         }
     }

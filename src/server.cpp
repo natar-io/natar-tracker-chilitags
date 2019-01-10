@@ -190,7 +190,7 @@ rapidjson::Value* CTagsToJSON(chilitags::TagCornerMap* tags, rapidjson::Document
 string process(Image* image) {
     Mat imageCv, gray;
     imageCv = Mat(image->height(), image->width(), CV_8UC3, image->data());
-    cvtColor(imageCv, gray, CV_RGB2GRAY);
+    cvtColor(imageCv, gray, COLOR_RGB2GRAY);
     chilitags::Chilitags chilitags;
     chilitags::TagCornerMap* tags = new chilitags::TagCornerMap();
     *tags = chilitags.find(gray);

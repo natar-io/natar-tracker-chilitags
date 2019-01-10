@@ -22,3 +22,5 @@ set(CHILITAGS_DETECTION_SERVER
         src/server.cpp)
 add_executable(chilitags-server ${CHILITAGS_DETECTION_SERVER})
 target_link_libraries(chilitags-server ${OpenCV_LIBS} ${REDISIMAGEHELPER_LIBS} ${HIREDIS_LIBS} ${EV_LIBS} ${CHILITAGS_LIBS})
+
+install (TARGETS chilitags-server DESTINATION bin)

@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.2)
-project (chilitags-server VERSION 0.1)
+project (natar-tracker-chilitags VERSION 0.1)
 
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/module)
@@ -20,7 +20,7 @@ include_directories(${REDISIMAGEHELPER_INCLUDE_DIR})
 
 set(CHILITAGS_DETECTION_SERVER
         src/server.cpp)
-add_executable(chilitags-server ${CHILITAGS_DETECTION_SERVER})
-target_link_libraries(chilitags-server ${OpenCV_LIBS} ${REDISIMAGEHELPER_LIBS} ${HIREDIS_LIBS} ${EV_LIBS} ${CHILITAGS_LIBS})
+add_executable(${PROJECT_NAME} ${CHILITAGS_DETECTION_SERVER})
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${REDISIMAGEHELPER_LIBS} ${HIREDIS_LIBS} ${EV_LIBS} ${CHILITAGS_LIBS})
 
-install (TARGETS chilitags-server DESTINATION bin)
+install (TARGETS ${PROJECT_NAME} DESTINATION bin)

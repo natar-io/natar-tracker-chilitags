@@ -251,7 +251,7 @@ void onImagePublished(redisAsyncContext* c, void* rep, void* privdata) {
 }
 
 int main(int argc, char** argv) {
-    cxxopts::Options options("aruco-detection-server", "Aruco markers detection server.");
+    cxxopts::Options options("natar-tracker-chilitags", "Chilitags tracker for the Natar platform");
     options.add_options()
             ("redis-port", "The port to which the redis client should try to connect.", cxxopts::value<int>())
             ("redis-host", "The host adress to which the redis client should try to connect", cxxopts::value<std::string>())
